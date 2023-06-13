@@ -42,16 +42,13 @@ app.post("/meetings", (req, res) => {
   // create an object to store the request body
   const toSend = {
     type,
-    expires_at: new Date(expires_at).toISOString(),
     recording_options: { auto_record: Boolean(recording_options) },
     ui_settings,
     display_name,
   };
   console.log("toSend", toSend);
-
-  // if type is instant, remove expires_at from the request body
-  if (type === "instant") {
-    delete toSend.expires_at;
+  if (type === "long_term") {
+    toSend.expires_at = new Date(expires_at).toISOString();
   }
 
   const options = {
